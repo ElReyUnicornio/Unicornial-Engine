@@ -1,0 +1,72 @@
+# =========================
+# CMake
+# =========================
+build/
+build-*/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+
+# =========================
+# CLion / JetBrains
+# =========================
+.idea/
+*.iml
+.idea_modules/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# =========================
+# bin
+# =========================
+*.o
+*.obj
+*.lo
+*.la
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+
+# =========================
+# Debug / Release
+# =========================
+Debug/
+Release/
+RelWithDebInfo/
+MinSizeRel/
+
+# =========================
+# Logs
+# =========================
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+*~
+
+# =========================
+# SO
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Otros
+# =========================
+.cache/
+.vscode/
