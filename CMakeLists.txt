@@ -7,6 +7,9 @@ find_package(OpenGL REQUIRED)
 
 add_executable(UnicornialEngine src/main.cpp
         src/glad.h
-        src/glad.c)
+        src/glad.c
+        src/Utils.cpp
+        src/Utils.h
+)
 
 target_link_libraries(UnicornialEngine glfw)

@@ -1,5 +1,9 @@
+//
+// Created by tto415 on 1/17/26.
+//
+
 #include <iostream>
-#include "Utils.h"
+#include "../Utils.h"
 
 const char* vertexShaderSource = "#version 330 core\n"
         "layout (location = 0) in vec3 aPos;\n"
