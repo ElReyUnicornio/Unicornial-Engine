@@ -10,6 +10,8 @@ add_executable(UnicornialEngine src/main.cpp
         src/glad.c
         src/Utils.cpp
         src/Utils.h
+        src/Shader.cpp
+        src/Shader.h
 )
 
 target_link_libraries(UnicornialEngine glfw)
