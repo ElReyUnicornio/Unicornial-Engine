@@ -4,7 +4,7 @@
 
 #ifndef UNICORNIALENGINE_UTILS_H
 #define UNICORNIALENGINE_UTILS_H
-#include "glad.h"
+#include "../external/glad/glad.h"
 #include <GLFW/glfw3.h>
 
 inline bool debug = false;

@@ -5,7 +5,7 @@
 #ifndef UNICORNIALENGINE_SHADER_H
 #define UNICORNIALENGINE_SHADER_H
 
-#include "glad.h"
+#include "../external/glad/glad.h"
 #include <string>
 #include <fstream>
 #include <sstream>
