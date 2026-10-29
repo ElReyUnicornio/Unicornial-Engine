@@ -8,13 +8,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+//model mock
 float vertices[] = {
     // Cara trasera: rojo
     // Bottom-left, bottom-right, top-right, top-left
     -0.5f, -0.5f, -0.5f,  1, 0, 0,  0, 0,
-     0.5f, -0.5f, -0.5f,  1, 0, 0,  1, 0,
-     0.5f,  0.5f, -0.5f,  1, 0, 0,  1, 1,
-    -0.5f,  0.5f, -0.5f,  1, 0, 0,  0, 1,
+     0.5f, -0.5f, -0.5f,  0, 1, 0,  1, 0,
+     0.5f,  0.5f, -0.5f,  0, 0, 1,  1, 1,
+    -0.5f,  0.5f, -0.5f,  0, 0, 0,  0, 1,
 
     // Cara frontal: verde
     -0.5f, -0.5f,  0.5f,  0, 1, 0,  0, 0,
@@ -24,27 +25,27 @@ float vertices[] = {
 
     // Cara izquierda: azul
     -0.5f, -0.5f,  0.5f,  0, 0, 1,  0, 0,
-    -0.5f, -0.5f, -0.5f,  0, 0, 1,  1, 0,
-    -0.5f,  0.5f, -0.5f,  0, 0, 1,  1, 1,
+    -0.5f, -0.5f, -0.5f,  1, 0, 0,  1, 0,
+    -0.5f,  0.5f, -0.5f,  0, 0, 0,  1, 1,
     -0.5f,  0.5f,  0.5f,  0, 0, 1,  0, 1,
 
     // Cara derecha: amarillo
-     0.5f, -0.5f, -0.5f,  1, 1, 0,  0, 0,
+     0.5f, -0.5f, -0.5f,  0, 1, 0,  0, 0,
      0.5f, -0.5f,  0.5f,  1, 1, 0,  1, 0,
      0.5f,  0.5f,  0.5f,  1, 1, 0,  1, 1,
-     0.5f,  0.5f, -0.5f,  1, 1, 0,  0, 1,
+     0.5f,  0.5f, -0.5f,  0, 0, 1,  0, 1,
 
     // Cara inferior: magenta
-    -0.5f, -0.5f, -0.5f,  1, 0, 1,  0, 0,
-     0.5f, -0.5f, -0.5f,  1, 0, 1,  1, 0,
+    -0.5f, -0.5f, -0.5f,  1, 0, 0,  0, 0,
+     0.5f, -0.5f, -0.5f,  0, 1, 0,  1, 0,
      0.5f, -0.5f,  0.5f,  1, 0, 1,  1, 1,
     -0.5f, -0.5f,  0.5f,  1, 0, 1,  0, 1,
 
     // Cara superior: cian
     -0.5f,  0.5f,  0.5f,  0, 1, 1,  0, 0,
      0.5f,  0.5f,  0.5f,  0, 1, 1,  1, 0,
-     0.5f,  0.5f, -0.5f,  0, 1, 1,  1, 1,
-    -0.5f,  0.5f, -0.5f,  0, 1, 1,  0, 1
+     0.5f,  0.5f, -0.5f,  0, 0, 1,  1, 1,
+    -0.5f,  0.5f, -0.5f,  0, 0, 0,  0, 1
 };
 
 unsigned int indices[] = {
@@ -75,6 +76,29 @@ const glm::vec3 cubePositions[] = {
     glm::vec3(-1.3f, 1.0f, -1.5f)
     };
 
+//camera props
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraFront);
+glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+glm::vec3 cameraUp = glm::cross(cameraRight, cameraDirection);
+
+float yaw = -90.0f, pitch, fov = 45.0f;
+
+//delta time
+float lastFrame = 0.0f;
+float currentFrame = 0.0f;
+float deltaTime = 0.0f;
+
+float lastX = 400.0f;
+float lastY = 600.0f;
+bool firstMouse = true;
+
+void processCameraInput(GLFWwindow *window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
 int main() {
     //create window
     GLFWwindow* window;
@@ -85,8 +109,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    window = glfwCreateWindow(600, 600, "Unicornial Engine", NULL, NULL);
+    window = glfwCreateWindow(1920, 1080, "Unicornial Engine", NULL, NULL);
 
     if (window == NULL) {
         std::cout << "Failed to create window";
@@ -94,13 +117,16 @@ int main() {
         return -1;
     }
     glfwMakeContextCurrent(window);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
 
     //setup glad
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         std::cout << "Failed to initialize glad \n";
         return  -1;
     }
-    glViewport(0, 0, 600, 600);
+    glViewport(0, 0, 1920, 1080);
 
     //events
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -167,23 +193,36 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    //3D
+    //perspective
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
     glm::mat4 projection = glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
     //render loop
-
     while (!glfwWindowShouldClose(window)) {
         //events
         processInput(window);
+        processCameraInput(window);
+
+        //time
+        currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
 
         //rendering
         glEnable(GL_DEPTH_TEST);
         vertexGradientShader.use();
+        const float radius = 10.0f;
+        float camX = sin(glfwGetTime()) * radius;
+        float camZ = cos(glfwGetTime()) * radius;
+        glm::mat4 view;
+        view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0),
+        glm::vec3(0.0, 1.0, 0.0));
+
+        projection = glm::perspective(glm::radians(fov), 1920.0f/1080.0f, 0.1f, 100.0f);
+        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+
         vertexGradientShader.setMat4("model", model);
         vertexGradientShader.setMat4("view", view);
         vertexGradientShader.setMat4("projection", projection);
@@ -192,16 +231,13 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindTexture(GL_TEXTURE_2D, texture);
-        glBindVertexArray(VAO);
 
         glBindVertexArray(VAO);
-
-        for(unsigned int i = 0; i < 10; i++)
-        {
+        for(unsigned int i = 0; i < 10; i++) {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
-            float angle = 20.0f * i;
-            model = glm::rotate(model, glm::radians(angle),
+            float angle = 20.0f * ((i + 3) % 3 == 0 ? glm::clamp(i, (uint)1, (uint)10) : 0.0f);
+            model = glm::rotate(model, (float) glfwGetTime() * glm::radians(angle),
             glm::vec3(1.0f, 0.3f, 0.5f));
             vertexGradientShader.setMat4("model", model);
             glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*) 0);
@@ -220,4 +256,63 @@ int main() {
     glfwTerminate();
 
     return 0;
+}
+
+void processCameraInput(GLFWwindow *window)
+{
+    float cameraSpeed = 1.5f;
+
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        cameraSpeed *= 2;
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) *
+        cameraSpeed * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) *
+        cameraSpeed * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraUp * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraUp * deltaTime;
+}
+
+void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos;
+    lastX = xpos;
+    lastY = ypos;
+    float sensitivity = 0.1f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+    yaw -= xoffset;
+    pitch -= yoffset;
+    if(pitch > 89.0f)
+        pitch = 89.0f;
+    if(pitch < -89.0f)
+        pitch = -89.0f;
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraFront = glm::normalize(direction);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    fov += (float)yoffset;
+    if (fov < 1.0f)
+        fov = 1.0f;
+    if (fov > 45.0f)
+        fov = 45.0f;
 }

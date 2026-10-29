@@ -6,7 +6,6 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
-
 }
 
 void toggleDebug() {
@@ -22,9 +21,9 @@ void toggleDebug() {
 void processInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && !debugPressed)
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && !debugPressed)
         toggleDebug();
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE)
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE)
         debugPressed = false;
 }
 
