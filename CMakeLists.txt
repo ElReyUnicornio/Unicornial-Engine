@@ -13,6 +13,10 @@ add_executable(UnicornialEngine src/main.cpp
         src/Utils.h
         src/Shader.cpp
         src/Shader.h
+        src/GameObject.cpp
+        src/GameObject.h
+        src/components/Script.h
+        src/components/Transform.h
 )
 
 target_link_libraries(UnicornialEngine glfw)
