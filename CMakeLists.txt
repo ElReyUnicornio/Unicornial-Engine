@@ -11,12 +11,16 @@ add_executable(UnicornialEngine src/main.cpp
         external/stb/stb_image.h
         src/Utils.cpp
         src/Utils.h
-        src/Shader.cpp
-        src/Shader.h
-        src/GameObject.cpp
-        src/GameObject.h
-        src/components/Script.h
-        src/components/Transform.h
+        src/core/Shader.cpp
+        src/core/Shader.h
+        src/core/GameObject.cpp
+        src/core/GameObject.h
+        src/core/Script.h
+        src/core/Transform.h
+        src/core/Engine.cpp
+        src/core/Engine.h
+        src/core/Scene.cpp
+        src/core/Scene.h
 )
 
 target_link_libraries(UnicornialEngine glfw)

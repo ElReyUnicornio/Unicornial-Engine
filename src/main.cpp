@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include "Utils.h"
-#include "Shader.h"
+#include "core/Shader.h"
 #include "../external/stb/stb_image.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

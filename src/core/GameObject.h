@@ -11,15 +11,19 @@
 
 class Transform;
 class Script;
+class Node;
 
 class GameObject {
 private:
     std::vector<Script> scripts;
     Transform *transform{};
+    Node *node{};
 public:
-    GameObject();
+    GameObject(Node *node);
     void start();
     void update();
+    Node* getNode();
+    void destroy();
 };
 
 #endif //UNICORNIALENGINE_GAMEOBJECT_H

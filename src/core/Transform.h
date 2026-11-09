@@ -8,7 +8,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <utility>
 
-#include "../GameObject.h"
+#include "GameObject.h"
 
 #endif //UNICORNIALENGINE_TRANSFORM_H
 

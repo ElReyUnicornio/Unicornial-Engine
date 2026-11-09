@@ -4,7 +4,7 @@
 
 #ifndef UNICORNIALENGINE_SCRIPT_H
 #define UNICORNIALENGINE_SCRIPT_H
-#include "../GameObject.h"
+#include "GameObject.h"
 
 class Script {
 private:
