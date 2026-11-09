@@ -6,6 +6,8 @@
 #define UNICORNIALENGINE_SCRIPT_H
 #include "GameObject.h"
 
+class GameObject;
+
 class Script {
 private:
     GameObject *gameObject;

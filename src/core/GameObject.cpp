@@ -14,13 +14,13 @@ GameObject::GameObject(Node *node) {
 
 void GameObject::start() {
     for (auto &script : scripts) {
-        script.start();
+        script->start();
     }
 }
 
 void GameObject::update() {
     for (auto & script : scripts) {
-        script.update();
+        script->update();
     }
 }
 

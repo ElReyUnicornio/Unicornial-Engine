@@ -4,9 +4,9 @@
 
 #include "Scene.h"
 
-Node::Node(const std::string &name, Node *parent, GameObject *object) {
+Node::Node(const std::string &name, Node *parent, std::unique_ptr<GameObject> object) {
     this->name = name;
-    this->object = object;
+    this->object = std::move(object);
     this->parent = parent;
 }
 

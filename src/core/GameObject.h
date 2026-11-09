@@ -4,8 +4,10 @@
 
 #ifndef UNICORNIALENGINE_GAMEOBJECT_H
 #define UNICORNIALENGINE_GAMEOBJECT_H
+#include <memory>
 #include <glm/glm.hpp>
 #include <vector>
+#include "Script.h"
 
 
 
@@ -15,7 +17,7 @@ class Node;
 
 class GameObject {
 private:
-    std::vector<Script> scripts;
+    std::vector<std::unique_ptr<Script>> scripts;
     Transform *transform{};
     Node *node{};
 public:

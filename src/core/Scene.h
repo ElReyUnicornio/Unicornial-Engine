@@ -17,7 +17,7 @@ private:
     std::unique_ptr<GameObject> object = nullptr;
     std::vector<std::unique_ptr<Node>> children;
 public:
-    Node(const std::string &name, Node *parent, GameObject *object);
+    Node(const std::string &name, Node *parent, std::unique_ptr<GameObject> object);
     [[nodiscard]] std::string getName() const;
     [[nodiscard]] GameObject *getObject() const;
     [[nodiscard]] std::vector<std::unique_ptr<Node>>& getChildren();
