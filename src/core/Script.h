@@ -15,8 +15,8 @@ private:
     Script(GameObject *gameObject) {
         this->gameObject = gameObject;
     }
-    void start();
-    void update();
+    void start() {};
+    void update() {};
 };
 
 #endif //UNICORNIALENGINE_SCRIPT_H

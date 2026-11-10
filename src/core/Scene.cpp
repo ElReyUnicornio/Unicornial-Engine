@@ -4,6 +4,8 @@
 
 #include "Scene.h"
 
+
+//Node class implementations ----------------------------------
 Node::Node(const std::string &name, Node *parent, std::unique_ptr<GameObject> object) {
     this->name = name;
     this->object = std::move(object);
@@ -66,4 +68,27 @@ void Node::destroy() {
     if (this->parent != nullptr) {
         this->parent->removeChild(this->getName());
     }
+}
+
+//Scene class implementations
+
+void Scene::loadFromFile(std::string filename) {
+}
+
+Scene::Scene() {
+    this->tree = new Node("root", nullptr, nullptr);
+}
+
+Node* Scene::getNode(const std::string &name) const {
+    return this->tree->find([&](Node& n) {
+        return n.getName() == name;
+    });
+}
+
+bool Scene::getDirty() {
+    return this->dirty;
+}
+
+void Scene::setDirty(bool value) {
+    this->dirty = value;
 }

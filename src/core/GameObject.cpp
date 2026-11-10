@@ -13,7 +13,7 @@ GameObject::GameObject(Node *node) {
 };
 
 void GameObject::start() {
-    for (auto &script : scripts) {
+    for (auto& script : scripts) {
         script->start();
     }
 }

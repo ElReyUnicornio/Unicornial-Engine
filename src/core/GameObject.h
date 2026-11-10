@@ -7,9 +7,6 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include <vector>
-#include "Script.h"
-
-
 
 class Transform;
 class Script;

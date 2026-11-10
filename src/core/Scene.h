@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "GameObject.h"
+#include "Script.h"
 #include <string>
 #include "Engine.h"
 
@@ -14,7 +15,7 @@ class Node {
 private:
     std::string name = "node";
     Node *parent = nullptr;
-    std::unique_ptr<GameObject> object = nullptr;
+    std::unique_ptr<GameObject> object;
     std::vector<std::unique_ptr<Node>> children;
 public:
     Node(const std::string &name, Node *parent, std::unique_ptr<GameObject> object);
@@ -30,14 +31,39 @@ public:
     void setParent(Node *parent);
     void removeParent();
     void destroy();
+
+    template <typename F>
+    void traverse(F&& func) {
+        *func(this);
+        for (auto& child : this->children) {
+            child->traverse(func);
+        }
+    }
+
+    template <typename P>
+    Node* find(P&& pred) {
+        if (pred(*this))
+            return this;
+
+        for (auto& child : this->children) {
+            if (Node* found = child->find(pred))
+                return found;
+        }
+        return nullptr;
+    }
 };
 
 class Scene {
+private:
+    std::string name = "scene";
+    bool dirty = true;
     public:
     Node *tree;
     Scene();
     void loadFromFile(std::string filename);
-    void bind(Engine *engine);
+    Node* getNode(const std::string &name) const;
+    bool getDirty();
+    void setDirty(bool value);
 };
 
 
