@@ -21,6 +21,7 @@ add_executable(UnicornialEngine src/main.cpp
         src/core/Engine.h
         src/core/Scene.cpp
         src/core/Scene.h
+        src/core/Logger.h
 )
 
 target_link_libraries(UnicornialEngine glfw)

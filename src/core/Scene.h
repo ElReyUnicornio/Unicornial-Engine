@@ -34,7 +34,7 @@ public:
 
     template <typename F>
     void traverse(F&& func) {
-        *func(this);
+        func(this);
         for (auto& child : this->children) {
             child->traverse(func);
         }

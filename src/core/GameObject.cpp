@@ -31,3 +31,7 @@ Node* GameObject::getNode() {
 void GameObject::destroy() {
     this->node->destroy();
 }
+
+unsigned int GameObject::getScriptCount() {
+    return this->scripts.size();
+}

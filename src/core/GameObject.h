@@ -23,6 +23,7 @@ public:
     void update();
     Node* getNode();
     void destroy();
+    unsigned int getScriptCount();
 };
 
 #endif //UNICORNIALENGINE_GAMEOBJECT_H
